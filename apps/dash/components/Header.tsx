@@ -1,0 +1,122 @@
+import { useAuth0 } from '@auth0/auth0-react';
+import Link from 'next/link';
+import { useStartBillingSession } from '../lib/billing';
+import { useAccount } from '../providers/AccountProvider';
+import styles from '../styles/Header.module.scss';
+import Button from './Button';
+import { NavLink } from './Links';
+
+export default function Header() {
+  const auth = useAuth0();
+  const account = useAccount();
+
+  return (
+    <header className={styles.Header}>
+      <nav>
+        <h1>
+          <NavLink href="/">
+            <Logo />
+          </NavLink>
+        </h1>
+      </nav>
+
+      <menu>
+        {auth.user && (
+          <>
+            <li>
+              <Link href="/account">{auth.user.email}</Link>
+            </li>
+            {account && (
+              <li>
+                <AccountStatus />
+              </li>
+            )}
+            <li>
+              <Button
+                size="small"
+                kind="tertiary"
+                onClick={() => {
+                  auth.logout({ returnTo: window.location.origin });
+                }}
+              >
+                Log Out
+              </Button>
+            </li>
+          </>
+        )}
+      </menu>
+    </header>
+  );
+}
+
+const AccountStatus = () => {
+  const account = useAccount();
+  const [startBillingSession] = useStartBillingSession();
+
+  if (!account) {
+    return null;
+  }
+
+  const days = Math.max(Math.ceil(account.trialDaysLeft), 0);
+
+  const handleBillingSession = () => {
+    startBillingSession().then(({ data }) => {
+      if (data) {
+        location.href = data.url;
+      }
+    });
+  };
+
+  if (account.level === 'PREMIUM') {
+    return <PremiumBadge />;
+  }
+
+  return (
+    <>
+      <span>Trial: {days} days left</span>{' '}
+      <Button
+        onClick={handleBillingSession}
+        size="small"
+        style={{
+          marginLeft: '.5rem',
+        }}
+      >
+        Upgrade
+      </Button>
+    </>
+  );
+};
+
+const PremiumBadge = () => (
+  <p
+    style={{
+      textTransform: 'capitalize',
+      fontSize: '11px',
+      padding: '0.3em .4em',
+      background: '#f7fa40',
+      border: '1px solid #121212',
+      borderRadius: '6px',
+      color: '#121212',
+      lineHeight: 1,
+    }}
+  >
+    Premium
+  </p>
+);
+
+const Logo = () => (
+  <svg
+    className={styles.Logo}
+    width="540px"
+    height="460px"
+    viewBox="0 0 540 460"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+  >
+    <g>
+      <path d="M335.087422,429.265131 C293.318727,429.265131 257.826486,403.796902 245.468146,368.642798 C304.782929,354.566228 353.545137,315.012647 377.997291,263.01803 C408.476677,277.612702 429.393817,307.212576 429.393817,341.306327 C429.393817,389.80595 387.087327,429.265131 335.087422,429.265131 M348.213103,254.216881 C327.427132,295.045959 288.294941,326.136474 240.868474,338.112096 C242.678611,291.087747 284.235249,253.345328 335.087422,253.345328 C339.542808,253.345328 343.919492,253.657068 348.213103,254.216881 M197.495141,343.501675 C105.473279,343.501675 30.606183,273.347142 30.606183,187.116077 C30.606183,100.887207 105.473279,30.7348688 197.495141,30.7348688 C289.519188,30.7348688 364.386284,100.887207 364.386284,187.116077 C364.386284,200.141075 362.650476,212.788473 359.436827,224.891426 C351.555735,223.405175 343.418863,222.610459 335.087422,222.610459 C266.210394,222.610459 210.174845,275.856424 210.174845,341.306327 C210.174845,341.872727 210.21201,342.432541 210.220754,343.001136 C206.01459,343.299703 201.780006,343.501675 197.495141,343.501675 M388.683221,234.111886 C392.797567,219.091317 394.992467,203.341892 394.992467,187.116077 C394.992467,83.9391221 306.396312,0 197.495141,0 C88.5961552,0 0,83.9391221 0,187.116077 C0,290.293031 88.5961552,374.236544 197.495141,374.236544 C203.356225,374.236544 209.15391,373.977493 214.883825,373.503298 C229.692845,423.350864 277.954423,460 335.087422,460 C403.964451,460 460,406.754035 460,341.306327 C460,294.075615 430.812632,253.211412 388.683221,234.111886"></path>
+      <path d="M480,208.335941 C463.575154,208.335941 450.212567,195.625082 450.212567,180.001131 C450.212567,164.374918 463.575154,151.664059 480,151.664059 C496.424846,151.664059 509.787433,164.374918 509.787433,180.001131 C509.787433,195.625082 496.424846,208.335941 480,208.335941 M480,120 C446.917239,120 420,146.916712 420,180.001131 C420,213.08555 446.917239,240 480,240 C513.082761,240 540,213.08555 540,180.001131 C540,146.916712 513.082761,120 480,120"></path>
+    </g>
+  </svg>
+);

@@ -1,0 +1,39 @@
+.SubscriptionNotice {
+  background-color: rgba(177, 177, 177, 0.025);
+  border: 3px solid rgba(177, 177, 177, 0.2);
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  top: 40vh;
+  transform: translateY(-50%);
+
+  & > * {
+    margin: 0;
+  }
+
+  p {
+    font-size: 21px;
+    line-height: 1.5;
+    margin-bottom: 1em;
+    color: #888;
+  }
+
+  .button {
+    display: inline-block;
+    padding: 0.75em;
+    background: #0062ff;
+    border-radius: 0.5em;
+    color: #fff;
+    cursor: pointer;
+    font-size: 21px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    opacity: 1;
+  }
+}

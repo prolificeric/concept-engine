@@ -1,5 +1,5 @@
 {
-  "name": "turborepo-basic-shared",
+  "name": "concept-engine",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
@@ -13,12 +13,13 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "@changesets/cli": "^2.20.0",
     "prettier": "^2.5.1",
     "turbo": "latest"
   },
   "engines": {
     "npm": ">=7.0.0",
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   },
   "packageManager": "pnpm@6.31.0"
 }

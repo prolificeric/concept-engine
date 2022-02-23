@@ -1,0 +1,22 @@
+.ConceptsList {
+  margin-top: 30px;
+  column-width: 450px;
+
+  li {
+    margin: 0 0 0.5em 0;
+  }
+
+  a {
+    text-decoration: none;
+    opacity: 0.75;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.Pagination {
+  display: block;
+  margin: 2em 0;
+}

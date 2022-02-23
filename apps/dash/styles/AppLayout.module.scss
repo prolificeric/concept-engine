@@ -1,0 +1,18 @@
+.AppLayout {
+  main {
+    padding: 20px;
+    min-height: calc(100vh - 250px);
+
+    h1 {
+      margin-top: 0;
+    }
+
+    & > :first-child {
+      margin-top: 0;
+
+      & > :first-child {
+        margin-top: 0;
+      }
+    }
+  }
+}

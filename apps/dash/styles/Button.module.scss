@@ -1,0 +1,41 @@
+.Button {
+  display: inline-block;
+  padding: 0.5em 1em;
+  background: #0062ff;
+  border: none;
+  border-radius: 0.5em;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1em;
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  &[disabled] {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &.small {
+    font-size: 12px;
+    padding: 0.25em 0.5em;
+  }
+
+  &.large {
+    font-size: 21px;
+  }
+
+  &.tertiary {
+    background: transparent;
+    color: #121212;
+    border: 1px solid #121212;
+
+    @media (prefers-color-scheme: dark) {
+      color: #fff;
+      border: 1px solid #fff;
+    }
+  }
+
+  &.destructive {
+    background: rgb(182, 78, 78);
+  }
+}

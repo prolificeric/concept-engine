@@ -1,0 +1,31 @@
+compatibility_date = "2021-12-01"
+name = "api"
+type = "javascript"
+account_id = "e54008a1731b76a3689896b3244ae778"
+workers_dev = true
+
+kv_namespaces = [ 
+  { binding = "GLOBAL_DATA", id = "2f51e26f00df41e6b99a2528e41c6326", preview_id = "d00812a227924b6b8e9e506005239499" }
+]
+
+[build]
+command = "npm run build"
+
+[build.upload]
+dir = "dist"
+format = "modules"
+main = "./index.mjs"
+
+[durable_objects]
+bindings = [
+  { name = "CONCEPT_STORE", class_name = "ConceptStore" },
+  { name = "ADMIN_STORE", class_name = "AdminStore" }
+]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["ConceptStore"]
+
+[[migrations]]
+tag = "v2"
+new_classes = ["AdminStore"]
