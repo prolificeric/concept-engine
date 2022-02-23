@@ -2,15 +2,16 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect } from 'react';
 
 export default function AuthRequired(props: { render: () => any }) {
-  const { user, isLoading, loginWithRedirect } = useAuth0();
+  const { isAuthenticated, isLoading, error, loginWithRedirect } = useAuth0();
+  const shouldLogin = !isAuthenticated && !isLoading && !error;
 
   useEffect(() => {
-    if (!user && !isLoading) {
+    if (shouldLogin) {
       loginWithRedirect({
         redirect_uri: window.location.origin,
       });
     }
-  }, [isLoading, loginWithRedirect, user]);
+  }, [loginWithRedirect, shouldLogin]);
 
-  return user ? props.render() : null;
+  return isAuthenticated ? props.render() : null;
 }

@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import React from 'react';
 import styles from '../styles/Button.module.scss';
 
 export type ButtonKind = 'primary' | 'secondary' | 'tertiary' | 'destructive';
@@ -6,6 +8,7 @@ export type ButtonSize = 'small' | 'normal' | 'large';
 
 export default function Button(props: {
   children: any;
+  href?: string;
   disabled?: boolean;
   kind?: ButtonKind;
   size?: ButtonSize;
@@ -26,10 +29,16 @@ export default function Button(props: {
     styles[size],
   ].filter(Boolean);
 
+  const Component = props.href ? Link : 'button';
+
   return (
-    <button className={classNames.join(' ')} {...restAttr}>
+    <Component
+      className={classNames.join(' ')}
+      href={props.href as any}
+      {...restAttr}
+    >
       {children}
-    </button>
+    </Component>
   );
 }
 

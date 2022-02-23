@@ -16,90 +16,6 @@ const minPagination = 10;
 const maxPagination = 100;
 const paginationSteps = [minPagination, 20, 50, maxPagination];
 
-const usePaginatedConcepts = () => {
-  const [state, setState] = useState({
-    stack: [] as string[],
-    prefix: '',
-    from: '',
-    limit: defaultLimit,
-  });
-
-  const { stack, prefix, from, limit } = state;
-
-  const startKey = from || prefix || undefined;
-
-  const endKey = prefix
-    ? prefix.replace(/\[\]/g, '') + 'z'.repeat(5)
-    : undefined;
-
-  const { loading, error, data } = useConcepts({
-    pagination: {
-      startKey,
-      endKey,
-      limit: limit + 1,
-    },
-  });
-
-  const concepts = data?.concepts.map((c) => parseConcept(c.key));
-
-  const setLimit = (limit: number) => {
-    setState({
-      ...state,
-      limit,
-    });
-  };
-
-  const setPrefix = (prefix: string = '') => {
-    setState((state) => ({
-      ...state,
-      prefix,
-      from: '',
-      stack: [],
-    }));
-  };
-
-  const canPaginateBack = Boolean(stack.length > 0);
-
-  const canPaginateForward = Boolean(concepts && concepts.length > limit);
-
-  const prev = () => {
-    const from = stack.pop() || '';
-
-    setState({
-      ...state,
-      stack,
-      from,
-    });
-  };
-
-  const next = () => {
-    if (!canPaginateForward || !concepts) {
-      return;
-    }
-
-    setState({
-      ...state,
-      stack: [...state.stack, from || prefix],
-      from: concepts[limit].key,
-    });
-  };
-
-  return {
-    loading,
-    concepts,
-    error,
-    limit,
-    prefix,
-    from,
-    setLimit,
-    setPrefix,
-    canPaginateBack,
-    canPaginateForward,
-    prev,
-    next,
-  };
-};
-
 const SpacePage: NextPage = () => {
   return (
     <SpaceLayout>
@@ -109,6 +25,8 @@ const SpacePage: NextPage = () => {
 };
 
 const Content = () => {
+  const spaceId = useSpaceId();
+
   const {
     loading,
     error,
@@ -123,6 +41,17 @@ const Content = () => {
     canPaginateBack,
     canPaginateForward,
   } = usePaginatedConcepts();
+
+  if (concepts && concepts.length === 0) {
+    return (
+      <div>
+        <p>
+          This space contains no data.{' '}
+          <Link href={`/spaces/${spaceId}/compose`}>Add Concepts</Link>
+        </p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -225,6 +154,90 @@ const LimitSelector = (props: {
       })}
     </select>
   );
+};
+
+const usePaginatedConcepts = () => {
+  const [state, setState] = useState({
+    stack: [] as string[],
+    prefix: '',
+    from: '',
+    limit: defaultLimit,
+  });
+
+  const { stack, prefix, from, limit } = state;
+
+  const startKey = from || prefix || undefined;
+
+  const endKey = prefix
+    ? prefix.replace(/\[\]/g, '') + 'z'.repeat(5)
+    : undefined;
+
+  const { loading, error, data } = useConcepts({
+    pagination: {
+      startKey,
+      endKey,
+      limit: limit + 1,
+    },
+  });
+
+  const concepts = data?.concepts.map((c) => parseConcept(c.key));
+
+  const setLimit = (limit: number) => {
+    setState({
+      ...state,
+      limit,
+    });
+  };
+
+  const setPrefix = (prefix: string = '') => {
+    setState((state) => ({
+      ...state,
+      prefix,
+      from: '',
+      stack: [],
+    }));
+  };
+
+  const canPaginateBack = Boolean(stack.length > 0);
+
+  const canPaginateForward = Boolean(concepts && concepts.length > limit);
+
+  const prev = () => {
+    const from = stack.pop() || '';
+
+    setState({
+      ...state,
+      stack,
+      from,
+    });
+  };
+
+  const next = () => {
+    if (!canPaginateForward || !concepts) {
+      return;
+    }
+
+    setState({
+      ...state,
+      stack: [...state.stack, from || prefix],
+      from: concepts[limit].key,
+    });
+  };
+
+  return {
+    loading,
+    concepts,
+    error,
+    limit,
+    prefix,
+    from,
+    setLimit,
+    setPrefix,
+    canPaginateBack,
+    canPaginateForward,
+    prev,
+    next,
+  };
 };
 
 const useConcepts = (query: {
