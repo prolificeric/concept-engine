@@ -81,7 +81,7 @@ const QUERY_EXAMPLE = `query { concepts { key } }`;
 const createApiExample = (values: {
   spaceId: string;
   token?: string;
-}) => `fetch('https://api.coeng.io/spaces/${values.spaceId}/graphql', {
+}) => `fetch('https://api.coeng.workers.dev/spaces/${values.spaceId}/graphql', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
