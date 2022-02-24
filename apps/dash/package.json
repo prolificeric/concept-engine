@@ -1,5 +1,5 @@
 {
-  "name": "concept-engine-dash",
+  "name": "coeng-dash",
   "private": true,
   "scripts": {
     "dev": "node_modules/.bin/next",
