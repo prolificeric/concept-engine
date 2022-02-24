@@ -12,7 +12,7 @@ export const parseConfig = ({
   auth0: {
     domain: AUTH0_DOMAIN,
     clientId: AUTH0_CLIENT_ID,
-    audience: AUTH0_AUDIENCE.split(/, ?/),
+    audience: AUTH0_AUDIENCE,
   },
   coeng: {
     baseUrl: COENG_BASE_URL,
