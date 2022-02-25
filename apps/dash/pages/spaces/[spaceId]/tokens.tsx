@@ -25,6 +25,7 @@ export default function TokensPage() {
 const Content = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [addedTokens, setAddedTokens] = useState<Token[]>([]);
+  const spaceId = useSpaceId();
 
   return (
     <>
@@ -54,8 +55,13 @@ const Content = () => {
           <h2>Usage</h2>
 
           <p>
+            <strong>API URL:</strong>{' '}
+            <code>{`https://api.coeng.workers.dev/spaces/${spaceId}/graphql`}</code>
+          </p>
+
+          <p>
             Use API tokens within the <code>Authorization</code> header of
-            requests to the GraphQL API, as such:
+            requests to the GraphQL API. For example:
           </p>
 
           <p>
@@ -67,7 +73,7 @@ const Content = () => {
                 display: 'block',
               }}
             >
-              <pre>{createApiExample({ spaceId: useSpaceId() })}</pre>
+              <pre>{createApiExample({ spaceId })}</pre>
             </code>
           </p>
         </div>
