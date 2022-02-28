@@ -3,12 +3,13 @@ import { intercept } from '../lib/events';
 import { useAccount } from '../providers/AccountProvider';
 import styles from '../styles/SubscriptionNotice.module.scss';
 import Button from './Button';
+import Loading from './Loading';
 
 export default function SubscriptionCheck(props: { children: any }) {
   const account = useAccount();
 
   if (!account) {
-    return null;
+    return <Loading />;
   }
 
   return (account?.trialDaysLeft || 0) > 0 ? (
@@ -30,7 +31,7 @@ const SubscriptionNotice = () => {
   }
 
   if (billingSessionResult.loading) {
-    return null;
+    return <Loading />;
   }
 
   const handleStartBillingSession = () => {
