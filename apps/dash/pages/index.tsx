@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Button, { SubmitButton } from '../components/Button';
 import { SpaceLink } from '../components/Links';
+import Loading from '../components/Loading';
 import Modal from '../components/Modal';
 import { Horizontal } from '../components/Utils';
 import { useAdminClient } from '../lib/api';
@@ -23,7 +24,7 @@ export default function Home() {
   });
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {

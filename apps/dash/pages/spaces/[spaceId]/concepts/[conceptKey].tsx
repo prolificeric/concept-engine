@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Button from '../../../../components/Button';
 import Editor from '../../../../components/Editor';
+import Loading from '../../../../components/Loading';
 import SpaceLayout from '../../../../components/SpaceLayout';
 import Submenu from '../../../../components/Submenu';
 import { Horizontal } from '../../../../components/Utils';
@@ -41,7 +42,7 @@ const Content = () => {
     updateResult.data?.concept?.data || data?.concept?.data || '';
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {

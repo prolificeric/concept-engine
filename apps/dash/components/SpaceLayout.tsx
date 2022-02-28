@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useAdminClient } from '../lib/api';
 import { useSpaceId } from '../lib/routing';
 import { Space } from '../types/models';
+import Loading from './Loading';
 import SpaceMenu from './SpaceMenu';
 
 export default function SpaceLayout(props: { children: any }) {
@@ -13,7 +14,7 @@ const Wrapper = (props: { children: any }) => {
   const { loading, error, data } = useSpace();
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {

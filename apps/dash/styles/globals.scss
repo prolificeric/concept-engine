@@ -113,3 +113,22 @@ table {
     border: 1px solid rgba(177, 177, 177, 0.25);
   }
 }
+
+.spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  animation: spin 0.4s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -6,10 +6,12 @@ import styles from '../../../styles/SpaceBrowsePage.module.scss';
 import SpaceLayout from '../../../components/SpaceLayout';
 import { useSpaceId } from '../../../lib/routing';
 import Link from 'next/link';
-import Button from '../../../components/Button';
+import Button, { SubmitButton } from '../../../components/Button';
 import Submenu from '../../../components/Submenu';
 import { useState } from 'react';
 import { Concept, parseConcept } from '@creatureco/concept-ml-parser';
+import Loading from '../../../components/Loading';
+import { intercept } from '../../../lib/events';
 
 const defaultLimit = 50;
 const minPagination = 10;
@@ -42,7 +44,7 @@ const Content = () => {
     canPaginateForward,
   } = usePaginatedConcepts();
 
-  if (concepts && concepts.length === 0) {
+  if (!prefix && concepts && concepts.length === 0) {
     return (
       <div>
         <p>
@@ -57,7 +59,14 @@ const Content = () => {
     <>
       <Submenu>
         <li>
-          Filter: <PrefixSelector value={prefix} onChange={setPrefix} />
+          <SearchInput onSubmit={setPrefix} />
+        </li>
+        <li>
+          Filter:{' '}
+          <PrefixSelector
+            value={prefix.length === 1 ? prefix : ''}
+            onChange={setPrefix}
+          />
         </li>
 
         <li>
@@ -67,18 +76,52 @@ const Content = () => {
         </li>
 
         <li>
-          <Button disabled={!canPaginateBack} size="small" onClick={prev}>
+          <Button disabled={!canPaginateBack} onClick={prev}>
             &laquo; Prev
           </Button>
-          <Button disabled={!canPaginateForward} size="small" onClick={next}>
+          <Button disabled={!canPaginateForward} onClick={next}>
             Next &raquo;
           </Button>
         </li>
       </Submenu>
-      {!from && loading && <p>Loading...</p>}
-      {error && <p>Error: {error.message}</p>}
-      {concepts && <ConceptList concepts={concepts.slice(0, limit)} />}
+      {loading ? (
+        !from && <Loading />
+      ) : error ? (
+        <p>{error.message}</p>
+      ) : concepts && concepts.length > 0 ? (
+        <ConceptList concepts={concepts.slice(0, limit)} />
+      ) : (
+        <p>No concepts found. </p>
+      )}
     </>
+  );
+};
+
+const SearchInput = (props: { onSubmit: (value: string) => void }) => {
+  const [state, setState] = useState({
+    query: '',
+  });
+
+  return (
+    <form
+      onSubmit={intercept(() => {
+        props.onSubmit(state.query);
+      })}
+    >
+      <input
+        type="text"
+        autoComplete="on"
+        autoCapitalize="off"
+        autoCorrect="on"
+        value={state.query}
+        placeholder="Search for concepts..."
+        onChange={(event) => {
+          setState({ ...state, query: event.target.value });
+        }}
+      />
+
+      <SubmitButton style={{ marginLeft: 10 }} value="Search" />
+    </form>
   );
 };
 

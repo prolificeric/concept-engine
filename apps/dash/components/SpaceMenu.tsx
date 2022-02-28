@@ -1,10 +1,11 @@
 import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAdminClient } from '../lib/api';
+import { intercept } from '../lib/events';
 import { useSpaceId } from '../lib/routing';
 import { Space } from '../types/models';
-import Button from './Button';
+import Button, { SubmitButton } from './Button';
 import { NavLink } from './Links';
 import Submenu from './Submenu';
 
@@ -63,7 +64,12 @@ export default function SpaceMenu(props: { space: Space }) {
       <li>
         <NavLink href={`/spaces/${space.id}/tokens`}>API Access</NavLink>
       </li>
-      <li>
+      <li
+        style={{
+          position: 'absolute',
+          right: '0px',
+        }}
+      >
         <Button
           size="small"
           kind="destructive"

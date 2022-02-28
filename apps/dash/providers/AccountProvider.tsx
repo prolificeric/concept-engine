@@ -3,6 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import { Account } from '../types/models';
 import { useAdminClient } from '../lib/api';
 import { useAccessToken } from './AuthProvider';
+import Loading from '../components/Loading';
 
 export default function AccountProvider(props: { children: any }) {
   const token = useAccessToken();
@@ -14,7 +15,7 @@ export default function AccountProvider(props: { children: any }) {
 
   return (
     <AccountContext.Provider value={data?.account || null}>
-      {loading && <div>Loading...</div>}
+      {loading && <Loading />}
       {error ? <div>Error: {error.message}</div> : props.children}
     </AccountContext.Provider>
   );

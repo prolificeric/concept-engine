@@ -1,6 +1,7 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import Button, { SubmitButton } from '../../../components/Button';
+import Loading from '../../../components/Loading';
 import Modal from '../../../components/Modal';
 import SpaceLayout from '../../../components/SpaceLayout';
 import { Horizontal } from '../../../components/Utils';
@@ -103,7 +104,7 @@ const TokensList = (props: { addedTokens: Token[] }) => {
   const { loading, error, data } = useTokens();
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {

@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import AppLayout from '../components/AppLayout';
 import AuthRequired from '../components/AuthRequired';
+import Loading from '../components/Loading';
 import SubscriptionCheck from '../components/SubscriptionCheck';
 import Providers from '../providers';
 import '../styles/globals.scss';

@@ -79,9 +79,13 @@ export const interpolate = (
 };
 
 export const interpolateToConcept = (
-  pattern: Concept,
+  pattern: string | Concept,
   variables: VariableSourceDict,
 ): Concept => {
+  if (typeof pattern === 'string') {
+    pattern = parseConcept(pattern);
+  }
+
   if (isPattern(pattern)) {
     return Concept.createCompound(
       pattern.parts.map((part) => {

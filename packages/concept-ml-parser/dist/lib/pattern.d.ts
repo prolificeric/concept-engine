@@ -22,7 +22,7 @@ export declare type VariableSourceDict<TVariable extends string = string> = {
 };
 export declare const getPatternMatches: (patterns: Concept[], concepts: Concept[]) => RuleMatch[];
 export declare const interpolate: (pattern: string | Concept, variables: VariableDict) => string;
-export declare const interpolateToConcept: (pattern: Concept, variables: VariableSourceDict) => Concept;
+export declare const interpolateToConcept: (pattern: string | Concept, variables: VariableSourceDict) => Concept;
 export declare const interpolateToConcepts: (patternSource: ConceptSetSource, variables: VariableSourceDict) => Concept[];
 export declare const extractVariables: (concept: Concept, pattern: Concept) => null | VariableDict;
 export declare const getPatternVariables: (...patterns: Concept[] | Concept[][]) => Concept[];

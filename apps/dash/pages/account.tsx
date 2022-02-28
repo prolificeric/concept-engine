@@ -1,5 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import Button from '../components/Button';
+import Loading from '../components/Loading';
 import {
   useStartBillingSession,
   useSubscriptionManagementSession,
@@ -11,7 +12,7 @@ export default function UpgradePage() {
   const { user } = useAuth0();
 
   if (!account || !user) {
-    return 'Loading...';
+    return <Loading />;
   }
 
   return (

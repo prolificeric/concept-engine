@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Button from '../../../components/Button';
 import { SoloTextInput, TextArea } from '../../../components/Inputs';
+import Loading from '../../../components/Loading';
 import MonacoStylesheet from '../../../components/MonacoStylesheet';
 import SpaceLayout from '../../../components/SpaceLayout';
 import Submenu from '../../../components/Submenu';
@@ -105,7 +106,7 @@ const Results = () => {
   const variables = getPatternVariables(parseConcepts(rules));
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {
