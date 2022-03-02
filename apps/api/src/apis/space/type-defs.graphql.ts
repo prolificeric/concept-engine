@@ -22,9 +22,10 @@ type Concept {
 
 type RuleSetMatch {
   variables: [VariableMatch!]!
-  valueOf(name: String!): Concept!
+  valueOf(name: ID!): Concept!
   keyOf(name: ID!): String
   textOf(name: ID!): String
+  dataOf(name: ID!): String
   matches(rules: [String!]!): [RuleSetMatch!]!
   match(rules: [String!]!): RuleSetMatch
   concept(rule: String): Concept

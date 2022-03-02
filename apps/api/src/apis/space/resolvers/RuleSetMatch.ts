@@ -7,7 +7,12 @@ import {
 import { getConceptText } from '../../../lib/concepts';
 import { toVariableDict } from '../util';
 import matchRules from '../queries/matchRules';
-import { Interpolation, ResolverContext } from '../../../types';
+import {
+  Interpolation,
+  ResolverContext,
+  SpaceResolverContext,
+} from '../../../types';
+import getConceptData from '../queries/getConceptData';
 
 export default {
   Query: {
@@ -62,6 +67,22 @@ export default {
     textOf: (match: VariableDict, args: { name: string }) => {
       const concept = match[args.name];
       return concept && getConceptText(concept);
+    },
+
+    dataOf: (
+      match: VariableDict,
+      args: { name: string },
+      ctx: SpaceResolverContext,
+    ) => {
+      const concept = match[args.name];
+      return (
+        concept &&
+        getConceptData({
+          concept,
+          spaceId: ctx.spaceId,
+          globalData: ctx.globalData,
+        })
+      );
     },
 
     matches: (
