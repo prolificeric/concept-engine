@@ -21,10 +21,10 @@ export default async function removeConcepts(params: {
   let count = 0;
 
   await storage.transaction(async () => {
-    await storage.delete([...keysToUpdate.data, ...keysToUpdate.mask]);
+    await storage.delete(keysToUpdate.mask);
     await decrementMaskMatchCounts(storage, keysToUpdate.maskCount);
     await removeConceptData({ globalData, spaceId, concepts });
-    count = await storage.delete(keysToUpdate.storage);
+    count = await storage.delete(keysToUpdate.concept);
   });
 
   return count;
@@ -51,15 +51,13 @@ export const getKeysToUpdate = async (
   concepts: Concept[],
 ) => {
   const keys = {
-    storage: [] as string[],
-    data: [] as string[],
+    concept: [] as string[],
     mask: [] as string[],
     maskCount: new Map<string, number>(),
   };
 
   const recurse = async (concept: Concept): Promise<void> => {
-    keys.storage.push(createConceptStorageKey({ concept }));
-    keys.data.push(createConceptDataKey({ spaceId, concept }));
+    keys.concept.push(createConceptStorageKey({ concept }));
 
     getMaskPermutations(concept).map((mask) => {
       const matchKey = createMaskMatchKey({ concept, mask });
