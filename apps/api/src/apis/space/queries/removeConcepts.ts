@@ -4,7 +4,6 @@ import getContexts from './getContexts';
 import removeConceptData from './removeConceptData';
 
 import {
-  createConceptDataKey,
   createConceptStorageKey,
   createMaskMatchCountKey,
   createMaskMatchKey,
@@ -17,8 +16,13 @@ export default async function removeConcepts(params: {
   concepts: Concept[];
 }): Promise<number> {
   const { storage, spaceId, concepts, globalData } = params;
-  const keysToUpdate = await getKeysToUpdate(storage, spaceId, concepts);
+  const keysToUpdate = await getKeysToUpdate(storage, concepts);
   let count = 0;
+
+  console.log('Keys to delete', {
+    concept: keysToUpdate.concept,
+    mask: keysToUpdate.mask,
+  });
 
   await storage.transaction(async () => {
     await storage.delete(keysToUpdate.mask);
@@ -47,7 +51,6 @@ export const decrementMaskMatchCounts = async (
 
 export const getKeysToUpdate = async (
   storage: DurableObjectStorage,
-  spaceId: string,
   concepts: Concept[],
 ) => {
   const keys = {
