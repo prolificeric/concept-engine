@@ -5,6 +5,8 @@ export const parseConfig = ({
   AUTH0_CLIENT_SECRET = '',
   STRIPE_API_KEY = '',
   STRIPE_PREMIUM_PRICE_ID = '',
+  HONEYCOMB_API_KEY = '',
+  HONEYCOMB_DATASET = '',
   TEST_WORKER_URL = 'http://localhost:8787',
   TRIAL_LENGTH = '14',
 }: any) => ({
@@ -19,6 +21,10 @@ export const parseConfig = ({
   stripe: {
     apiKey: STRIPE_API_KEY,
     premiumPriceId: STRIPE_PREMIUM_PRICE_ID,
+  },
+  honeycomb: {
+    apiKey: HONEYCOMB_API_KEY,
+    dataset: HONEYCOMB_DATASET,
   },
   trialLength: parseInt(TRIAL_LENGTH, 10),
   test: {

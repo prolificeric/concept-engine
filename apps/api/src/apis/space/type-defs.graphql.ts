@@ -8,7 +8,7 @@ type Query {
 
 type Mutation {
   addConcepts(input: AddConceptsInput!): [Concept!]!
-  removeConcepts(keys: [String!]!): Int!
+  removeConcepts(keys: [String!]): Int!
   updateConceptData(input: UpdateConceptDataInput!): Concept!
 }
 
@@ -62,6 +62,12 @@ input MatchQuery {
 input AddConceptsInput {
   source: [String!]!
   interpolate: [Interpolation!] = []
+}
+
+enum RemovePartsOption {
+  NONE
+  SHALLOW
+  DEEP
 }
 
 input UpdateConceptDataInput {

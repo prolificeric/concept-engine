@@ -1,10 +1,11 @@
 import { Concept } from '@creatureco/concept-ml-parser';
-import { getMaskPermutations } from '../../../lib/mask';
+import { getConceptMasks } from '../../../lib/mask';
 import getContexts from './getContexts';
 import removeConceptData from './removeConceptData';
 
 import {
   createConceptStorageKey,
+  createContainmentKeys,
   createMaskMatchCountKey,
   createMaskMatchKey,
 } from '../../../lib/keys';
@@ -19,13 +20,9 @@ export default async function removeConcepts(params: {
   const keysToUpdate = await getKeysToUpdate(storage, concepts);
   let count = 0;
 
-  console.log('Keys to delete', {
-    concept: keysToUpdate.concept,
-    mask: keysToUpdate.mask,
-  });
-
   await storage.transaction(async () => {
     await storage.delete(keysToUpdate.mask);
+    await storage.delete(keysToUpdate.containment);
     await decrementMaskMatchCounts(storage, keysToUpdate.maskCount);
     await removeConceptData({ globalData, spaceId, concepts });
     count = await storage.delete(keysToUpdate.concept);
@@ -55,6 +52,7 @@ export const getKeysToUpdate = async (
 ) => {
   const keys = {
     concept: [] as string[],
+    containment: [] as string[],
     mask: [] as string[],
     maskCount: new Map<string, number>(),
   };
@@ -62,7 +60,7 @@ export const getKeysToUpdate = async (
   const recurse = async (concept: Concept): Promise<void> => {
     keys.concept.push(createConceptStorageKey({ concept }));
 
-    getMaskPermutations(concept).map((mask) => {
+    getConceptMasks(concept).map((mask) => {
       const matchKey = createMaskMatchKey({ concept, mask });
       const matchCountKey = createMaskMatchCountKey({ mask });
       keys.mask.push(matchKey);
@@ -73,6 +71,9 @@ export const getKeysToUpdate = async (
     });
 
     const contexts = await getContexts(storage, concept);
+    const containmentKeys = createContainmentKeys({ concept });
+
+    keys.containment.push(...containmentKeys);
 
     return contexts.reduce((prev, context) => {
       return prev.then(recurse.bind(null, context));

@@ -10,6 +10,8 @@ export interface Env {
   JWKS_AUDIENCE?: string;
   AUTH0_CLIENT_ID?: string;
   AUTH0_CLIENT_SECRET?: string;
+  HONEYCOMB_API_KEY: string;
+  HONEYCOMB_DATASET: string;
 }
 
 export interface Dict<T = string> {

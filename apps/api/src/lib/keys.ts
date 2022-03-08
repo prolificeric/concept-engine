@@ -16,7 +16,7 @@ export const createMaskMatchKey = (params: {
     throw new Error('Mask does not match concept.');
   }
 
-  const encodedMaskKey = encodeConceptKey(params.mask.key);
+  const encodedMaskKey = encodeConceptKey(mask.key);
 
   return `mask/match:${encodedMaskKey}/${createVariableValueString(vars)}`;
 };

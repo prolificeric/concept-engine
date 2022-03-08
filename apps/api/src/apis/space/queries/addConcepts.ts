@@ -78,7 +78,6 @@ export const saveContainments = async (
 
   await batchProcess(128, containmentEntries, (batch, i, totalBatches) => {
     const dict = Object.fromEntries(batch);
-    console.log(`Saving containments batch ${i + 1})/${totalBatches}`);
     return storage.put(dict);
   });
 };
