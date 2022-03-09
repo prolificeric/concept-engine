@@ -6,7 +6,6 @@ import {
   parseConcepts,
 } from '@creatureco/concept-ml-parser';
 
-import addConcepts from '../queries/addConcepts';
 import getAllConcepts from '../queries/getAllConcepts';
 import getConcept from '../queries/getConcept';
 import getConceptData from '../queries/getConceptData';
@@ -21,6 +20,8 @@ import {
   Interpolation,
   SpaceResolverContext,
 } from '../../../types';
+
+import addConceptsWithTriggers from '../queries/addConceptsWithTriggers';
 
 const DATA_META_PATTERN = parseConcept('$concept @data $data');
 
@@ -81,7 +82,17 @@ export default {
         }
       });
 
-      const addedConcepts = await addConcepts(storage, concepts);
+      const addedConcepts: Concept[] = [];
+
+      await addConceptsWithTriggers({
+        storage,
+        globalData,
+        spaceId,
+        concepts,
+        onConceptAdded: (concept) => {
+          addedConcepts.push(concept);
+        },
+      });
 
       for (const { concept, data } of conceptDataUpdates) {
         await updateConceptData({
@@ -116,9 +127,11 @@ export default {
       return concept;
     },
 
-    removeConcepts: (
+    removeConcepts: async (
       _root: null,
-      args: { keys: string[] },
+      args: {
+        keys: string[];
+      },
       ctx: SpaceResolverContext,
     ): Promise<number> => {
       return removeConcepts({

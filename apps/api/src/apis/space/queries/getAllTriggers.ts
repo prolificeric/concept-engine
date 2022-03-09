@@ -14,19 +14,18 @@ export default async function getAllTriggers(
 ): Promise<Trigger[]> {
   const index: TriggerIndex = {};
 
-  const { match, generate, notify, remove } = triggerFragRules;
+  const { match, add, notify, remove } = triggerFragRules;
 
-  const [matchFrags, generateFrags, removeFrags, notifyFrags] =
-    await Promise.all(
-      [match, generate, notify, remove].map(matchRules.bind(null, storage)),
-    );
+  const [matchFrags, addFrags, removeFrags, notifyFrags] = await Promise.all(
+    [match, add, remove, notify].map((c) => matchRules(storage, c)),
+  );
 
   matchFrags.forEach(({ $trigger, $rule }) => {
     indexTriggerFrag(index, $trigger, 'matches', $rule);
   });
 
-  generateFrags.forEach(({ $trigger, $template }) => {
-    indexTriggerFrag(index, $trigger, 'generates', $template);
+  addFrags.forEach(({ $trigger, $template }) => {
+    indexTriggerFrag(index, $trigger, 'adds', $template);
   });
 
   removeFrags.forEach(({ $trigger, $template }) => {

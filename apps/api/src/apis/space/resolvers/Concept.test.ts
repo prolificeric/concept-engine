@@ -1,24 +1,7 @@
-import { MemoryStorage } from '@miniflare/storage-memory';
-import { DurableObjectStorage } from '@miniflare/durable-objects';
-import { KVNamespace } from '@miniflare/kv';
-import { SpaceResolverContext } from '@/types';
+import { parseConcept } from '@creatureco/concept-ml-parser';
+import { createTestContext } from '../../../lib/test';
 import Concept from './Concept';
 import RuleSetMatch from './RuleSetMatch';
-import { parseConcept } from '@creatureco/concept-ml-parser';
-
-const createTestContext = async (): Promise<SpaceResolverContext> => {
-  const mem = new MemoryStorage();
-
-  return {
-    storage: new DurableObjectStorage(mem),
-    spaceId: 'TEST_SPACE',
-    globalData: new KVNamespace(mem) as any,
-    env: {} as any,
-    config: {} as any,
-    requester: {} as any,
-    paymentProvider: {} as any,
-  };
-};
 
 describe('adding concepts', () => {
   test('concept is added', async () => {

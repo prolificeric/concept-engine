@@ -8,7 +8,7 @@ type Query {
 
 type Mutation {
   addConcepts(input: AddConceptsInput!): [Concept!]!
-  removeConcepts(keys: [String!]): Int!
+  removeConcepts(keys: [String!]!): Int!
   updateConceptData(input: UpdateConceptDataInput!): Concept!
 }
 

@@ -13,7 +13,7 @@ export interface Trigger {
   name: string;
   components: {
     matches: Concept[];
-    generates: Concept[];
+    adds: Concept[];
     notifies: Concept[];
     removes: Concept[];
   };
@@ -39,7 +39,7 @@ export const createTrigger = (name: string): Trigger => {
     name,
     components: {
       matches: [],
-      generates: [],
+      adds: [],
       notifies: [],
       removes: [],
     },
@@ -48,14 +48,14 @@ export const createTrigger = (name: string): Trigger => {
 
 export enum ComponentType {
   matches = '@matches',
-  generates = '@generates',
+  adds = '@adds',
   notifies = '@notifies',
   removes = '@removes',
 }
 
 export const triggerFragRules = {
   match: parseConcepts(`$trigger [${ComponentType.matches} $rule]`),
-  generate: parseConcepts(`$trigger [${ComponentType.generates} $template]`),
+  add: parseConcepts(`$trigger [${ComponentType.adds} $template]`),
   remove: parseConcepts(`$trigger [${ComponentType.removes} $template]`),
   notify: parseConcepts(`$trigger [${ComponentType.notifies} $url]`),
 };
@@ -196,8 +196,8 @@ export const buildTriggerIndex = (frags: Concept[]): TriggerIndex => {
       case ComponentType.matches:
         indexTriggerFrag(index, $trigger, 'matches', $component);
         break;
-      case ComponentType.generates:
-        indexTriggerFrag(index, $trigger, 'generates', $component);
+      case ComponentType.adds:
+        indexTriggerFrag(index, $trigger, 'adds', $component);
         break;
       case ComponentType.notifies:
         indexTriggerFrag(index, $trigger, 'notifies', $component);

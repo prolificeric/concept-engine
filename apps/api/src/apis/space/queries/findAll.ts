@@ -10,9 +10,15 @@ export default async function findAll(
   storage: DurableObjectStorage,
   source: ConceptSetSource,
 ) {
-  const fetched = await Promise.all(
-    toConcepts(source).map(getConcept.bind(null, storage)),
-  );
+  const results: Concept[] = [];
 
-  return fetched.filter(Boolean) as Concept[];
+  for (const concept of toConcepts(source)) {
+    const fetchedConcept = await getConcept(storage, concept);
+
+    if (fetchedConcept) {
+      results.push(fetchedConcept);
+    }
+  }
+
+  return results;
 }

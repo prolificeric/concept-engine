@@ -20,19 +20,20 @@ export default async function removeConcepts(params: {
   const keysToUpdate = await getKeysToUpdate(storage, concepts);
   let count = 0;
 
-  await storage.transaction(async () => {
-    await storage.delete(keysToUpdate.mask);
-    await storage.delete(keysToUpdate.containment);
-    await decrementMaskMatchCounts(storage, keysToUpdate.maskCount);
-    await removeConceptData({ globalData, spaceId, concepts });
-    count = await storage.delete(keysToUpdate.concept);
+  await storage.transaction(async (tx) => {
+    await tx.delete(keysToUpdate.mask);
+    await tx.delete(keysToUpdate.containment);
+    await decrementMaskMatchCounts(tx, keysToUpdate.maskCount);
+    count = await tx.delete(keysToUpdate.concept);
   });
+
+  await removeConceptData({ globalData, spaceId, concepts });
 
   return count;
 }
 
 export const decrementMaskMatchCounts = async (
-  storage: DurableObjectStorage,
+  storage: DurableObjectStorage | DurableObjectTransaction,
   maskDeltaMap: Map<string, number>,
 ): Promise<void> => {
   const maskCountKeys = Array.from(maskDeltaMap.keys());
@@ -75,9 +76,9 @@ export const getKeysToUpdate = async (
 
     keys.containment.push(...containmentKeys);
 
-    return contexts.reduce((prev, context) => {
-      return prev.then(recurse.bind(null, context));
-    }, Promise.resolve());
+    for (const context of contexts) {
+      await recurse(context);
+    }
   };
 
   for (const concept of concepts) {

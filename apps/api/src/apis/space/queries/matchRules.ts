@@ -17,7 +17,12 @@ import getMaskMatchCount from './getMaskMatchCount';
 export default async function matchConcepts(
   storage: DurableObjectStorage,
   rules: Concept[],
+  options: {
+    includeVariables?: boolean;
+  } = {},
 ): Promise<VariableDict[]> {
+  const { includeVariables = false } = options;
+
   // Uniquify the rules
   rules = Array.from(new Set(rules.map((r) => r.key))).map(parseConcept);
 
@@ -108,6 +113,12 @@ export default async function matchConcepts(
     } else {
       results.push(rulePartial);
     }
+  }
+
+  if (!includeVariables) {
+    return results.filter((variables) => {
+      return Object.values(variables).every(anti(isVariable));
+    });
   }
 
   return results;
