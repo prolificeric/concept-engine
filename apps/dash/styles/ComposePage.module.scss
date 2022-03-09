@@ -29,10 +29,15 @@
 }
 
 .toolbar {
-  padding: 5px 0 10px 0;
+  padding: 15px 0 10px 0;
+}
 
-  button {
-    font-size: 12px;
-    padding: 0.3em 0.6em;
+.tab {
+  cursor: pointer;
+  padding: 0.1em 0.5em;
+  border-radius: 5px;
+
+  &.active {
+    background: rgba(127, 127, 127, 0.5);
   }
 }
