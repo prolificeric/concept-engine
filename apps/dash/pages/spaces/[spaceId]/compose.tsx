@@ -13,7 +13,7 @@ import Button from '../../../components/Button';
 import { Horizontal } from '../../../components/Utils';
 import MonacoStylesheet from '../../../components/MonacoStylesheet';
 import Submenu from '../../../components/Submenu';
-import { useAddConcepts } from '../../api/addConcepts';
+import { useAddConcepts } from '../../../lib/queries/addConcepts';
 import styles from '../../../styles/ComposePage.module.scss';
 
 export default function ComposePage() {

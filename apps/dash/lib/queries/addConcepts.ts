@@ -1,5 +1,5 @@
 import { useMutation, gql } from '@apollo/client';
-import { useSpaceClient } from '../../lib/api';
+import { useSpaceClient } from '../api';
 
 export const useAddConcepts = () => {
   return useMutation<

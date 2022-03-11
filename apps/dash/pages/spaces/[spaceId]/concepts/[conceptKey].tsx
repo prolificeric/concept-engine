@@ -10,7 +10,8 @@ import Submenu from '../../../../components/Submenu';
 import { Horizontal } from '../../../../components/Utils';
 import { useSpaceClient } from '../../../../lib/api';
 import { useSpaceId } from '../../../../lib/routing';
-import { useAddConcepts } from '../../../api/addConcepts';
+import { useAddConcepts } from '../../../../lib/queries/addConcepts';
+import { useRemoveConcepts } from '../../../../lib/queries/removeConcepts';
 
 export default function SpaceConceptPage() {
   return (
@@ -26,10 +27,17 @@ const Content = () => {
   const { data, loading, error, refetch } = useConcept();
   const [updateData, updateResult] = useUpdateConceptData();
   const [add, addResult] = useAddConcepts();
+  const [remove, removeResult] = useRemoveConcepts();
 
   const [state, setState] = useState({
     dataValue: '',
   });
+
+  useEffect(() => {
+    if (removeResult.data) {
+      refetch();
+    }
+  }, [removeResult.data, refetch]);
 
   useEffect(() => {
     if (addResult.data) {
@@ -72,7 +80,7 @@ const Content = () => {
     return (
       <>
         <p>
-          <code>{conceptKey}</code> doesn&apos;t exist in this space yet.
+          <code>{conceptKey}</code> doesn&apos;t exist in this space.
         </p>
         <Button onClick={handleAddConcept} disabled={addResult.loading}>
           {addResult.loading ? 'Adding...' : 'Add Concept'}
@@ -83,6 +91,14 @@ const Content = () => {
   }
 
   const { concept } = data;
+
+  const handleRemove = () => {
+    remove({
+      variables: {
+        keys: [concept.key],
+      },
+    });
+  };
 
   return (
     <Horizontal
@@ -95,7 +111,21 @@ const Content = () => {
           flexBasis: '50%',
         }}
       >
-        <h2>{concept.key}</h2>
+        <Horizontal>
+          <h2>{concept.key}</h2>
+          <Button
+            kind="destructive"
+            size="small"
+            style={{
+              position: 'relative',
+              top: 8,
+            }}
+            onClick={handleRemove}
+            disabled={removeResult.loading}
+          >
+            {removeResult.loading ? 'Removing...' : 'Remove'}
+          </Button>
+        </Horizontal>
 
         {concept.parts.length > 0 && (
           <>
@@ -116,23 +146,24 @@ const Content = () => {
           </>
         )}
 
-        {concept.contexts.length > 0 && (
-          <>
-            <h3>Contexts</h3>
-            <ul>
-              {concept.contexts.map((ctx) => (
-                <li key={ctx.key}>
-                  <Link
-                    href={`/spaces/${spaceId}/concepts/${encodeURIComponent(
-                      ctx.key,
-                    )}`}
-                  >
-                    {ctx.key}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </>
+        <h3>Contexts</h3>
+
+        {concept.contexts.length > 0 ? (
+          <ul>
+            {concept.contexts.map((ctx) => (
+              <li key={ctx.key}>
+                <Link
+                  href={`/spaces/${spaceId}/concepts/${encodeURIComponent(
+                    ctx.key,
+                  )}`}
+                >
+                  {ctx.key}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No contexts found.</p>
         )}
       </div>
       <div
