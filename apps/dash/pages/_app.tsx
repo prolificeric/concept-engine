@@ -1,5 +1,6 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import Script from 'next/script';
 import AppLayout from '../components/AppLayout';
 import AuthRequired from '../components/AuthRequired';
 import Loading from '../components/Loading';
@@ -29,6 +30,23 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           )}
         </AppLayout>
       </Providers>
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-KLEVBYD2WL"
+      />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: GA_SNIPPET,
+        }}
+      />
     </>
   );
 }
+
+const GA_SNIPPET = `
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KLEVBYD2WL');
+`;
