@@ -112,7 +112,9 @@ const Content = () => {
         }}
       >
         <Horizontal>
-          <h2>{concept.key}</h2>
+          <h2>
+            <code>{concept.key}</code>
+          </h2>
           <Button
             kind="destructive"
             size="small"
