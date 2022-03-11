@@ -10,6 +10,7 @@ import Submenu from '../../../../components/Submenu';
 import { Horizontal } from '../../../../components/Utils';
 import { useSpaceClient } from '../../../../lib/api';
 import { useSpaceId } from '../../../../lib/routing';
+import { useAddConcepts } from '../../../api/addConcepts';
 
 export default function SpaceConceptPage() {
   return (
@@ -21,12 +22,20 @@ export default function SpaceConceptPage() {
 
 const Content = () => {
   const spaceId = useSpaceId();
-  const { data, loading, error } = useConcept();
+  const conceptKey = useConceptKey();
+  const { data, loading, error, refetch } = useConcept();
   const [updateData, updateResult] = useUpdateConceptData();
+  const [add, addResult] = useAddConcepts();
 
   const [state, setState] = useState({
     dataValue: '',
   });
+
+  useEffect(() => {
+    if (addResult.data) {
+      refetch();
+    }
+  }, [addResult.data, refetch]);
 
   useEffect(() => {
     if (data?.concept?.data) {
@@ -50,7 +59,27 @@ const Content = () => {
   }
 
   if (!data?.concept) {
-    return <p>Concept not found.</p>;
+    const handleAddConcept = () => {
+      add({
+        variables: {
+          input: {
+            source: conceptKey,
+          },
+        },
+      });
+    };
+
+    return (
+      <>
+        <p>
+          <code>{conceptKey}</code> doesn&apos;t exist in this space yet.
+        </p>
+        <Button onClick={handleAddConcept} disabled={addResult.loading}>
+          {addResult.loading ? 'Adding...' : 'Add Concept'}
+        </Button>
+        {addResult.error && <p>Error: {addResult.error.message}</p>}
+      </>
+    );
   }
 
   const { concept } = data;

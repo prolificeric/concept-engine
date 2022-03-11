@@ -1,22 +1,23 @@
 import { useState } from 'react';
+import Editor from '@monaco-editor/react';
+
 import {
   Concept,
   parseConcept,
   parseConcepts,
 } from '@creatureco/concept-ml-parser';
-import Editor from '@monaco-editor/react';
+
 import SpaceLayout from '../../../components/SpaceLayout';
 import { useTheme } from '../../../lib/theme';
 import Button from '../../../components/Button';
 import { Horizontal } from '../../../components/Utils';
-import { gql, useMutation } from '@apollo/client';
-import { useSpaceClient } from '../../../lib/api';
 import MonacoStylesheet from '../../../components/MonacoStylesheet';
 import Submenu from '../../../components/Submenu';
+import { useAddConcepts } from '../../api/addConcepts';
 import styles from '../../../styles/ComposePage.module.scss';
 
 export default function ComposePage() {
-  const [save, saveResult] = useSave();
+  const [save, saveResult] = useAddConcepts();
   const [source, setSource] = useState('');
   const [addedConcepts, setAddedConcepts] = useState([] as Concept[]);
   const [tab, setTab] = useState<'current' | 'log'>('current');
@@ -122,18 +123,3 @@ export default function ComposePage() {
     </SpaceLayout>
   );
 }
-
-const useSave = () => {
-  return useMutation<
-    { concepts: { key: string }[] },
-    { input: { source: string } }
-  >(ADD_CONCEPTS, { client: useSpaceClient() });
-};
-
-const ADD_CONCEPTS = gql`
-  mutation AddConcepts($input: AddConceptsInput!) {
-    concepts: addConcepts(input: $input) {
-      key
-    }
-  }
-`;
