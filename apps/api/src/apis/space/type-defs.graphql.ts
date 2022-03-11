@@ -28,7 +28,7 @@ type RuleSetMatch {
   dataOf(name: ID!): String
   matches(rules: [String!]!): [RuleSetMatch!]!
   match(rules: [String!]!): RuleSetMatch
-  concept(rule: String): Concept
+  concept(rule: String!): Concept
 }
 
 type VariableMatch {
@@ -62,12 +62,6 @@ input MatchQuery {
 input AddConceptsInput {
   source: [String!]!
   interpolate: [Interpolation!] = []
-}
-
-enum RemovePartsOption {
-  NONE
-  SHALLOW
-  DEEP
 }
 
 input UpdateConceptDataInput {

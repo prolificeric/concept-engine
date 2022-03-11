@@ -25,10 +25,12 @@ export default {
       const rules = interpolateToConcepts(args.query.rules, interpolationDict);
 
       return matchRules(storage, rules).then((matches) => {
-        return matches.map((match) => ({
-          ...interpolationDict,
-          ...match,
-        }));
+        return matches.map((match) => {
+          return {
+            ...interpolationDict,
+            ...match,
+          };
+        });
       });
     },
 
@@ -41,32 +43,43 @@ export default {
       const rules = interpolateToConcepts(args.query.rules, interpolationDict);
       const [match] = await matchRules(storage, rules);
 
-      return {
-        ...interpolationDict,
-        ...match,
-      };
+      return (
+        match && {
+          ...interpolationDict,
+          ...match,
+        }
+      );
     },
   },
 
   RuleSetMatch: {
     variables: (match: VariableDict) => {
-      return Object.entries(match).map(([name, match]) => ({
-        name,
-        match,
-      }));
+      return (
+        Object.entries(match)
+          // Filter out interpolations
+          .filter(([, match]) => {
+            return !Array.isArray(match);
+          })
+          .map(([name, match]) => ({
+            name,
+            match,
+          }))
+      );
     },
 
     valueOf: (match: VariableDict, args: { name: string }) => {
-      return match[args.name];
+      const value = match[args.name];
+      return Array.isArray(value) ? null : value;
     },
 
     keyOf: (match: VariableDict, args: { name: string }) => {
-      return match[args.name]?.key;
+      const value = match[args.name];
+      return Array.isArray(value) ? null : value?.key;
     },
 
     textOf: (match: VariableDict, args: { name: string }) => {
-      const concept = match[args.name];
-      return concept && getConceptText(concept);
+      const value = match[args.name];
+      return value && !Array.isArray(value) ? getConceptText(value) : null;
     },
 
     dataOf: (
@@ -74,15 +87,15 @@ export default {
       args: { name: string },
       ctx: SpaceResolverContext,
     ) => {
-      const concept = match[args.name];
-      return (
-        concept &&
-        getConceptData({
-          concept,
-          spaceId: ctx.spaceId,
-          globalData: ctx.globalData,
-        })
-      );
+      const value = match[args.name];
+
+      return value && !Array.isArray(value)
+        ? getConceptData({
+            concept: value,
+            spaceId: ctx.spaceId,
+            globalData: ctx.globalData,
+          })
+        : null;
     },
 
     matches: (
