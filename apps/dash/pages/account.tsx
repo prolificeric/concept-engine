@@ -33,6 +33,16 @@ export default function UpgradePage() {
           <SubscribeButton />
         </>
       )}
+
+      <h2>Support</h2>
+
+      <p>
+        Send questions, comments, or concerns to:
+        <br />
+        <a href="mailto:support@creatureco.zendesk.com">
+          support@creatureco.zendesk.com
+        </a>
+      </p>
     </div>
   );
 }
