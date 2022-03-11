@@ -125,6 +125,16 @@ export default {
         return interpolateToConcepts(args.rule, submatches[0])[0];
       });
     },
+
+    concepts: (
+      match: VariableDict,
+      args: { rule: string },
+      { storage }: ResolverContext,
+    ) => {
+      return chain(storage, match, [args.rule]).then((submatches) => {
+        return interpolateToConcepts(args.rule, submatches[0]);
+      });
+    },
   },
 };
 

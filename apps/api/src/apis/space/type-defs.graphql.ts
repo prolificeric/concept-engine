@@ -29,6 +29,7 @@ type RuleSetMatch {
   matches(rules: [String!]!): [RuleSetMatch!]!
   match(rules: [String!]!): RuleSetMatch
   concept(rule: String!): Concept
+  concepts(rule: String!): [Concept!]!
 }
 
 type VariableMatch {
