@@ -8,6 +8,7 @@ import Modal from '../components/Modal';
 import { Horizontal } from '../components/Utils';
 import { useAdminClient } from '../lib/api';
 import { intercept } from '../lib/events';
+import { useAccessToken } from '../providers/AuthProvider';
 import styles from '../styles/Home.module.scss';
 
 interface Space {
@@ -17,13 +18,14 @@ interface Space {
 
 export default function Home() {
   const router = useRouter();
+  const token = useAccessToken();
   const { loading, error, data } = useSpaces();
 
   const [state, setState] = useState({
     showCreateModal: false,
   });
 
-  if (loading) {
+  if (loading || !token) {
     return <Loading />;
   }
 
