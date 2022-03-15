@@ -39,6 +39,9 @@ export interface ProcessTriggersParams {
   newConcepts: Concept[];
   newTriggers: Trigger[];
   onConceptAdded?: (concept: Concept) => void;
+  processNotification?: (
+    notification: TriggerMatchNotification,
+  ) => Promise<any>;
 }
 
 export interface TriggeredChangesDict {
@@ -50,6 +53,23 @@ export interface TriggeredChangesDict {
 const TRIGGER_COMPONENT_PATTERN = parseConcept('$trigger [$type $arg]');
 const COMPONENT_TYPE_KEYS = ['@matches', '@adds', '@removes', '@notifies'];
 
+export const processNotificationWithFetch = async ({
+  url,
+  variables,
+  trigger,
+}: TriggerMatchNotification) => {
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      variables,
+      trigger,
+    }),
+  });
+};
+
 export const addConceptsWithTriggers = async (params: {
   storage: DurableObjectStorage;
   concepts: Concept[];
@@ -57,12 +77,14 @@ export const addConceptsWithTriggers = async (params: {
   spaceId: string;
   triggers?: Trigger[];
   onConceptAdded?: (concept: Concept) => void;
+  processNotification?: ProcessTriggersParams['processNotification'];
 }): Promise<null | TriggerResults> => {
   const {
     storage,
     concepts,
     globalData,
     spaceId,
+    processNotification,
     onConceptAdded = () => {},
   } = params;
 
@@ -102,6 +124,7 @@ export const addConceptsWithTriggers = async (params: {
     newConcepts,
     newTriggers,
     onConceptAdded,
+    processNotification,
   };
 
   // Skip processing triggers if there are no new concepts or triggers
@@ -145,6 +168,7 @@ export const processTriggers = async (
     newTriggers,
     globalData,
     spaceId,
+    processNotification = processNotificationWithFetch,
   } = params;
 
   const allTriggerMatches: TriggerMatch[] = [];
@@ -183,6 +207,17 @@ export const processTriggers = async (
     onConceptAdded: params.onConceptAdded,
   });
 
+  // Process notifications
+  for (const notification of notifications) {
+    await processNotification(notification).catch((err) => {
+      console.error('Trigger notification error', err.message, {
+        spaceId,
+        url: notification.url,
+        triggerName: notification.trigger.name,
+      });
+    });
+  }
+
   // Process removed concepts
   await removeConcepts({
     storage,
@@ -190,26 +225,6 @@ export const processTriggers = async (
     spaceId,
     concepts: conceptsToRemove,
   });
-
-  // Process notifications
-  for (const { url, variables, trigger } of notifications) {
-    await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        variables,
-        trigger,
-      }),
-    }).catch((err) => {
-      console.error('Trigger notification error', err.message, {
-        url,
-        spaceId,
-        triggerName: trigger.name,
-      });
-    });
-  }
 
   return {
     params,
@@ -311,11 +326,13 @@ export const getTriggeredChanges = (
       variables,
     );
 
-    const metaInterpolated = interpolated.map((c) => {
-      return parseConcept(`[${c.key}] @triggeredBy [${trigger.name}]`);
-    });
+    return interpolated;
 
-    return interpolated.concat(metaInterpolated);
+    // const metaInterpolated = interpolated.map((c) => {
+    //   return parseConcept(`[${c.key}] @triggeredBy [${trigger.name}]`);
+    // });
+
+    // return interpolated.concat(metaInterpolated);
   });
 
   // Compute removed concepts

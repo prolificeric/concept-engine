@@ -7,7 +7,6 @@ import {
   addConceptsWithTriggers,
   findTriggerMatchesForConcept,
 } from './addConceptsWithTriggers';
-import matchConcepts from './matchRules';
 import getAllConcepts from './getAllConcepts';
 
 describe('findTriggerMatchesForConcept', () => {
@@ -149,7 +148,6 @@ describe('addConceptsWithTriggers', () => {
         expect(result?.triggeredChanges.conceptsToAdd).toMatchObject(
           parseConcepts(`
             john-smith Programmer
-            [john-smith Programmer] @triggeredBy trigger1
           `),
         );
       });
@@ -237,6 +235,69 @@ describe('addConceptsWithTriggers', () => {
       expect(allConcepts.some((c) => c.key === 'john-smith Programmer')).toBe(
         true,
       );
+    });
+  });
+});
+
+describe('processTriggers', () => {
+  describe('given a trigger with @notifies directive', () => {
+    const given = () => {
+      return [
+        {
+          name: 'trigger1',
+          components: {
+            matches: parseConcepts(
+              `
+                $person [
+                  Person
+                  knows $topic (ProgrammingLanguage)
+                ]
+              `,
+            ),
+            adds: [],
+            removes: [],
+            notifies: parseConcepts(`
+              <<http://localhost>>
+            `),
+          },
+        },
+      ];
+    };
+
+    describe('when a pattern match is made', () => {
+      const when = () => {
+        return parseConcepts(`
+          john-smith [
+            Person
+            knows ts (ProgrammingLanguage)
+          ]
+        `);
+      };
+
+      test('then it pings the specified URL', async () => {
+        const ctx = await createTestContext();
+        const triggers = given();
+        const concepts = when();
+        let result: any = {};
+
+        await addConceptsWithTriggers({
+          ...ctx,
+          triggers,
+          concepts,
+          processNotification: async (notification) => {
+            result = notification;
+          },
+        });
+
+        expect(result).toMatchObject({
+          url: 'http://localhost',
+          trigger: triggers[0],
+          variables: {
+            $topic: { key: 'ts', parts: [] },
+            $person: { key: 'john-smith', parts: [] },
+          },
+        });
+      });
     });
   });
 });
