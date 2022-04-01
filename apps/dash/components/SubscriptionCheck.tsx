@@ -12,11 +12,13 @@ export default function SubscriptionCheck(props: { children: any }) {
     return <Loading />;
   }
 
-  return (account?.trialDaysLeft || 0) > 0 ? (
-    props.children
-  ) : (
-    <SubscriptionNotice />
-  );
+  const trialDaysLeft = account?.trialDaysLeft || 0;
+
+  if (account.level === 'PREMIUM' || trialDaysLeft > 0) {
+    return props.children;
+  }
+
+  return <SubscriptionNotice />;
 }
 
 const SubscriptionNotice = () => {
