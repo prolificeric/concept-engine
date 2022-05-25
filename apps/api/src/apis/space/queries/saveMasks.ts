@@ -1,4 +1,4 @@
-import { Concept } from '@creatureco/concept-ml-parser';
+import { Concept } from '@coeng/concept-ml-parser';
 import { createMaskMatchKey } from '../../../lib/keys';
 import { getConceptMasks } from '../../../lib/mask';
 import { batchProcess } from '../util';

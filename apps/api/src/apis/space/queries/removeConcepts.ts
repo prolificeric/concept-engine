@@ -1,4 +1,4 @@
-import { Concept } from '@creatureco/concept-ml-parser';
+import { Concept } from '@coeng/concept-ml-parser';
 import { getConceptMasks } from '../../../lib/mask';
 import getContexts from './getContexts';
 import removeConceptData from './removeConceptData';

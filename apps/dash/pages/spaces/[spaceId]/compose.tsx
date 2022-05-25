@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import Editor from '@monaco-editor/react';
 
-import {
-  Concept,
-  parseConcept,
-  parseConcepts,
-} from '@creatureco/concept-ml-parser';
+import { Concept, parseConcept, parseConcepts } from '@coeng/concept-ml-parser';
 
 import SpaceLayout from '../../../components/SpaceLayout';
 import { useTheme } from '../../../lib/theme';

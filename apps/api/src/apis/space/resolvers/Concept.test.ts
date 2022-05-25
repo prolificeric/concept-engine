@@ -1,4 +1,4 @@
-import { parseConcept } from '@creatureco/concept-ml-parser';
+import { parseConcept } from '@coeng/concept-ml-parser';
 import { createTestContext } from '../../../lib/test-util';
 import Concept from './Concept';
 import RuleSetMatch from './RuleSetMatch';

@@ -2,7 +2,7 @@ import {
   Concept,
   ConceptSetSource,
   toConcepts,
-} from '@creatureco/concept-ml-parser';
+} from '@coeng/concept-ml-parser';
 
 import getConcept from './getConcept';
 

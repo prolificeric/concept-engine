@@ -1,4 +1,4 @@
-import { toConcepts } from '@creatureco/concept-ml-parser';
+import { toConcepts } from '@coeng/concept-ml-parser';
 import { Interpolation } from './types';
 
 export const toVariableDict = (interpolations: Interpolation[]) => {

@@ -17,7 +17,7 @@
   "dependencies": {
     "@cfworker/jwt": "^1.12.2",
     "@cloudflare/workers-honeycomb-logger": "^2.1.0",
-    "@creatureco/concept-ml-parser": "workspace:*",
+    "@coeng/concept-ml-parser": "workspace:*",
     "@graphql-tools/schema": "^8.3.13",
     "graphql": "^16.5.0",
     "itty-router": "^2.6.1",

@@ -2,7 +2,7 @@ import {
   interpolateToConcept,
   interpolateToConcepts,
   VariableDict,
-} from '@creatureco/concept-ml-parser';
+} from '@coeng/concept-ml-parser';
 
 import { getConceptText } from '../../../lib/concepts';
 import { toVariableDict } from '../util';

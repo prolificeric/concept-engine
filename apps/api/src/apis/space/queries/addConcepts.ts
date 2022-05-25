@@ -1,4 +1,4 @@
-import { Concept, getConceptsDeep } from '@creatureco/concept-ml-parser';
+import { Concept, getConceptsDeep } from '@coeng/concept-ml-parser';
 import { batchProcess } from '../util';
 import filterNew from './filterNew';
 import saveMasks from './saveMasks';

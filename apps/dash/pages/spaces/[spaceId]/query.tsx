@@ -2,7 +2,7 @@ import {
   getPatternVariables,
   parseConcept,
   parseConcepts,
-} from '@creatureco/concept-ml-parser';
+} from '@coeng/concept-ml-parser';
 
 import { gql, useQuery } from '@apollo/client';
 import Editor from '@monaco-editor/react';

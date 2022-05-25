@@ -4,7 +4,7 @@ import {
   interpolateToConcepts,
   parseConcept,
   parseConcepts,
-} from '@creatureco/concept-ml-parser';
+} from '@coeng/concept-ml-parser';
 
 import getAllConcepts from '../queries/getAllConcepts';
 import getConcept from '../queries/getConcept';

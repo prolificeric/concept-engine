@@ -1,4 +1,4 @@
-import { Concept, parseConcepts } from '@creatureco/concept-ml-parser';
+import { Concept, parseConcepts } from '@coeng/concept-ml-parser';
 
 import {
   triggerFragRules,

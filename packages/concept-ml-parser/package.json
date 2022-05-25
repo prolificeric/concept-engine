@@ -1,5 +1,5 @@
 {
-  "name": "@creatureco/concept-ml-parser",
+  "name": "@coeng/concept-ml-parser",
   "version": "0.4.0",
   "main": "./dist/index.js",
   "license": "MIT",

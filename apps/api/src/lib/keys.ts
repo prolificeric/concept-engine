@@ -3,7 +3,7 @@ import {
   parseConcept,
   Concept,
   extractVariables,
-} from '@creatureco/concept-ml-parser';
+} from '@coeng/concept-ml-parser';
 
 export const createMaskMatchKey = (params: {
   concept: Concept;

@@ -6,7 +6,7 @@ import {
   isAtom,
   isVariable,
   parseConcept,
-} from '@creatureco/concept-ml-parser';
+} from '@coeng/concept-ml-parser';
 
 import { Trigger, TriggerMatch } from '../../../lib/triggers';
 import { getConceptText } from '../../../lib/concepts';

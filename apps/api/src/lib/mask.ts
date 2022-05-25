@@ -5,7 +5,7 @@ import {
   isPattern,
   isVariable,
   parseConcepts,
-} from '@creatureco/concept-ml-parser';
+} from '@coeng/concept-ml-parser';
 
 import { anti } from './filter';
 

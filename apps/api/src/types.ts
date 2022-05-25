@@ -1,4 +1,4 @@
-import { Concept } from '@creatureco/concept-ml-parser';
+import { Concept } from '@coeng/concept-ml-parser';
 import { Config } from './config';
 import { PaymentProvider } from './providers/types';
 

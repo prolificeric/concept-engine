@@ -1,4 +1,4 @@
-import { parseConcepts, parseConcept } from '@creatureco/concept-ml-parser';
+import { parseConcepts, parseConcept } from '@coeng/concept-ml-parser';
 import addConcepts from './addConcepts';
 import { createTestContext } from '../../../lib/test-util';
 import { Trigger } from '../../../lib/triggers';

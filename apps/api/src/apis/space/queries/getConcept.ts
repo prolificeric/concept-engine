@@ -1,4 +1,4 @@
-import { Concept, parseConcept } from '@creatureco/concept-ml-parser';
+import { Concept, parseConcept } from '@coeng/concept-ml-parser';
 import { createConceptStorageKey } from '../../../lib/keys';
 
 export default async function getConcept(

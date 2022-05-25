@@ -9,7 +9,7 @@ import Link from 'next/link';
 import Button, { SubmitButton } from '../../../components/Button';
 import Submenu from '../../../components/Submenu';
 import { useState } from 'react';
-import { Concept, parseConcept } from '@creatureco/concept-ml-parser';
+import { Concept, parseConcept } from '@coeng/concept-ml-parser';
 import Loading from '../../../components/Loading';
 import { intercept } from '../../../lib/events';
 

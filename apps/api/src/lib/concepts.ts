@@ -1,4 +1,4 @@
-import { Concept } from '@creatureco/concept-ml-parser';
+import { Concept } from '@coeng/concept-ml-parser';
 
 export const getConceptText = (concept: Concept): string => {
   return concept.parts.length > 0

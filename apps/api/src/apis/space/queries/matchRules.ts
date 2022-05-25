@@ -6,7 +6,7 @@ import {
   isVariable,
   parseConcept,
   VariableDict,
-} from '@creatureco/concept-ml-parser';
+} from '@coeng/concept-ml-parser';
 
 import { anti } from '../../../lib/filter';
 import { encodeConceptKey, parseMatchKey } from '../../../lib/keys';

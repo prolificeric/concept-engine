@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { parseConcepts } from '@creatureco/concept-ml-parser';
+import { parseConcepts } from '@coeng/concept-ml-parser';
 import { gql } from 'graphql-request';
 import { requestSpace } from '@/api';
 import { ensureSpace } from './space/select';
