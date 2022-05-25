@@ -1,25 +1,13 @@
 {
   "name": "@creatureco/concept-ml-parser",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "main": "./dist/index.js",
   "license": "MIT",
-  "devDependencies": {
-    "@types/jest": "^26.0.23",
-    "@types/lodash": "^4.14.176",
-    "esbuild": "^0.13.8",
-    "eslint": "^7.27.0",
-    "jest": "^27.0.4",
-    "prettier": "^2.3.0",
-    "ts-jest": "^27.0.2",
-    "ts-node": "^10.0.0",
-    "typescript": "^4.3.2"
-  },
-  "dependencies": {},
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watchAll",
+    "test": "jest src",
+    "test:watch": "jest src --watchAll",
     "build": "npm run build:lib && npm run build:types",
-    "build:lib": "esbuild src/index.ts --bundle --platform=node --sourcemap=external --tree-shaking=true --minify --outdir=dist",
+    "build:lib": "esbuild src/*.ts --platform=node --sourcemap=external --tree-shaking=true --outdir=dist",
     "build:types": "tsc --emitDeclarationOnly"
   }
 }

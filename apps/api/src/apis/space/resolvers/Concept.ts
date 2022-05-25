@@ -58,11 +58,8 @@ export default {
       args: { input: { source: string[]; interpolate: Interpolation[] } },
       { storage, globalData, spaceId }: SpaceResolverContext,
     ) => {
-      const parsed = interpolateToConcepts(
-        args.input.source,
-        toVariableDict(args.input.interpolate),
-      );
-
+      const variables = toVariableDict(args.input.interpolate);
+      const parsed = interpolateToConcepts(args.input.source, variables);
       const concepts: Concept[] = [];
       const conceptDataUpdates: { concept: Concept; data: string }[] = [];
 

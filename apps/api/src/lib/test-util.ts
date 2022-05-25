@@ -7,7 +7,7 @@ export const createTestContext = async (): Promise<SpaceResolverContext> => {
   const mem = new MemoryStorage();
 
   return {
-    storage: new DurableObjectStorage(mem),
+    storage: new DurableObjectStorage(mem) as any,
     spaceId: 'TEST_SPACE',
     globalData: new KVNamespace(mem) as any,
     env: {} as any,

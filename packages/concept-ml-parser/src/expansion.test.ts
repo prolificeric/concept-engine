@@ -1,9 +1,16 @@
-import { parseConcept, parseConcepts } from './lang/parser';
+import { parseConcept, parseConcepts } from './expansion';
 
 // One big test case to start, to be refactored into smaller tests later.
+
 describe('text blocks', () => {
   test('parsed as one block', () => {
-    expect(parseConcept('<<hello \nworld!>>').getShape()).toEqual(0);
+    const key = '<<hello \nworld!>>';
+
+    expect(parseConcept(key)).toMatchObject({
+      key,
+      text: 'hello \nworld!',
+      parts: [],
+    });
   });
 });
 
@@ -23,13 +30,22 @@ describe('given complicated ConceptML source', () => {
           for [{frontend, backend} development]
         )
         python (for [general purpose programming])
-      } (language)
+      } (ProgrammingLanguage)
 
       programmer
     }
 
     ${textBlock1}
     ${textBlock2}
+
+    programmerTrigger [
+      @matches [
+        $person [Person, uses $tool (ProgrammingLanguage)]
+      ]
+      @adds [
+        $person Programmer
+      ]
+    ]
   `;
 
   describe('when it is parsed', () => {
@@ -49,11 +65,15 @@ describe('given complicated ConceptML source', () => {
         'john uses python',
         'mary uses javascript',
         'mary uses python',
-        'javascript language',
-        'python language',
+        'javascript ProgrammingLanguage',
+        'python ProgrammingLanguage',
         'javascript for [frontend development]',
         'javascript for [backend development]',
         'python for [general purpose programming]',
+        'programmerTrigger [@adds [$person Programmer]]',
+        'programmerTrigger [@matches [$person Person]]',
+        'programmerTrigger [@matches [$person [uses $tool]]]',
+        'programmerTrigger [@matches [$tool ProgrammingLanguage]]',
         textBlock1,
         textBlock2,
       ].sort();

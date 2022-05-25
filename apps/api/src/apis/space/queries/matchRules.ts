@@ -24,7 +24,9 @@ export default async function matchConcepts(
   const { includeVariables = false } = options;
 
   // Uniquify the rules
-  rules = Array.from(new Set(rules.map((r) => r.key))).map(parseConcept);
+  rules = Array.from(new Set(rules.map((r) => r.key))).map((key) =>
+    parseConcept(key),
+  );
 
   // First, check to see if any rules have no patterns.
   // For these, we can just do a lookup on the concept to see
@@ -59,7 +61,7 @@ export default async function matchConcepts(
     maskRuleDict.set(mask.key, entries);
   });
 
-  const masks = Array.from(maskRuleDict.keys()).map(parseConcept);
+  const masks = Array.from(maskRuleDict.keys()).map((key) => parseConcept(key));
 
   const matchCounts = await Promise.all(
     masks.map(getMaskMatchCount.bind(null, storage)),

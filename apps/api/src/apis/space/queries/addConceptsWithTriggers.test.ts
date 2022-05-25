@@ -1,13 +1,13 @@
 import { parseConcepts, parseConcept } from '@creatureco/concept-ml-parser';
 import addConcepts from './addConcepts';
-import { createTestContext } from '../../../lib/test';
+import { createTestContext } from '../../../lib/test-util';
 import { Trigger } from '../../../lib/triggers';
 import { SpaceResolverContext } from '../../../types';
+import getAllConcepts from './getAllConcepts';
 import {
   addConceptsWithTriggers,
   findTriggerMatchesForConcept,
 } from './addConceptsWithTriggers';
-import getAllConcepts from './getAllConcepts';
 
 describe('findTriggerMatchesForConcept', () => {
   let ctx: SpaceResolverContext;

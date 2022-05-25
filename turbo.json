@@ -17,6 +17,16 @@
     "deploy": {
       "dependsOn": ["build"],
       "outputs": []
+    },
+    "test": {
+      "cache": false,
+      "dependsOn": ["install"],
+      "inputs": ["src/**/*.ts"]
+    },
+    "test:watch": {
+      "cache": false,
+      "dependsOn": ["install"],
+      "inputs": ["src/**/*.ts"]
     }
   }
 }

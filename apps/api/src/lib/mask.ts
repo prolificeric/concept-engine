@@ -14,16 +14,13 @@ export const createMask = (pattern: Concept): Concept => {
 
   const recurse = (pattern: Concept): Concept => {
     if (isVariable(pattern)) {
-      const normalized =
-        map.get(pattern.key) || Concept.createAtom('$' + map.size);
-
+      const normalized = map.get(pattern.key) || new Concept('$' + map.size);
       map.set(pattern.key, normalized);
-
       return normalized;
     }
 
     if (isPattern(pattern)) {
-      return Concept.createCompound(pattern.parts.map(recurse));
+      return new Concept(pattern.parts.map(recurse));
     }
 
     return pattern;
