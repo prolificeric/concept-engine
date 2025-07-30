@@ -1,34 +1,35 @@
 {
-  "module": "./dist/index.mjs",
-  "devDependencies": {
-    "@cloudflare/workers-types": "^3.11.0",
-    "@cloudflare/wrangler": "^1.19.12",
-    "@miniflare/durable-objects": "^2.4.0",
-    "@miniflare/kv": "^2.4.0",
-    "@miniflare/storage-memory": "^2.4.0",
-    "@types/md5": "^2.3.2",
-    "@types/webcrypto": "^0.0.28",
-    "axios": "^0.26.1",
-    "chokidar": "^3.5.3",
-    "dotenv": "^11.0.0",
-    "jest-environment-miniflare": "^2.4.0",
-    "miniflare": "^2.4.0"
-  },
-  "dependencies": {
-    "@cfworker/jwt": "^1.12.2",
-    "@cloudflare/workers-honeycomb-logger": "^2.1.0",
-    "@coeng/concept-ml-parser": "workspace:*",
-    "@graphql-tools/schema": "^8.3.13",
-    "graphql": "^16.5.0",
-    "itty-router": "^2.6.1",
-    "md5": "^2.3.0"
-  },
-  "scripts": {
-    "build": "esbuild --bundle --format=esm --outfile=./dist/index.mjs --minify ./src/index.ts",
-    "build:watch": "esbuild --bundle --format=esm --watch --outfile=./dist/index.mjs --sourcemap ./src/index.ts",
-    "dev": "miniflare --watch",
-    "test": "jest src",
-    "test:watch": "jest src --watch",
-    "deploy": "wrangler publish"
-  }
+	"name": "coeng-api",
+	"module": "./dist/index.mjs",
+	"devDependencies": {
+		"@cloudflare/workers-types": "^3.11.0",
+		"@cloudflare/wrangler": "^1.19.12",
+		"@miniflare/durable-objects": "^2.4.0",
+		"@miniflare/kv": "^2.4.0",
+		"@miniflare/storage-memory": "^2.4.0",
+		"@types/md5": "^2.3.2",
+		"@types/webcrypto": "^0.0.28",
+		"axios": "^0.26.1",
+		"chokidar": "^3.5.3",
+		"dotenv": "^11.0.0",
+		"jest-environment-miniflare": "^2.4.0",
+		"miniflare": "^2.4.0"
+	},
+	"dependencies": {
+		"@cfworker/jwt": "^1.12.2",
+		"@cloudflare/workers-honeycomb-logger": "^2.1.0",
+		"@coeng/concept-ml-parser": "workspace:*",
+		"@graphql-tools/schema": "^8.3.13",
+		"graphql": "^16.5.0",
+		"itty-router": "^2.6.1",
+		"md5": "^2.3.0"
+	},
+	"scripts": {
+		"build": "esbuild --bundle --format=esm --outfile=./dist/index.mjs --minify ./src/index.ts",
+		"build:watch": "esbuild --bundle --format=esm --watch --outfile=./dist/index.mjs --sourcemap ./src/index.ts",
+		"dev": "miniflare --watch",
+		"test": "jest src",
+		"test:watch": "jest src --watch",
+		"deploy": "wrangler publish"
+	}
 }
